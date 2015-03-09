@@ -1,9 +1,9 @@
 Lickr.Router.map(function() {
-    this.resource('lickr', {path: "/"});
+    this.resource('questions', {path: "/"});
 });
 
 Lickr.QuestionsRoute = Ember.Route.extend({
-    model: function(){
+    model: function () {
         return this.store.find('question');
     }
 });
