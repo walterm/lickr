@@ -7,27 +7,29 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+<script type="text/x-handlebars" data-template-name="questions">
+  {{#each question in model}}
+    <div class="container">
+      <div class="row row-centered">
+        <h3 class="question-text">{{question.text}}</h3>
+      </div>
 
-  <script type="text/x-handlebars" data-template-name="lickr">
-    <section id="main" class="container">
-      
+      <div id="photos" class="container">
         <div class="row row-centered">
-          <h3 class="question-text">Question text here</h3>
+          <img class="question-img" src="./img/{{unbound question.image1}}">
+          <img class="question-img" src="./img/{{unbound question.image2}}">
         </div>
-
-        <div id="photos" class="container">
-          <div class="row row-centered">
-            <img class="question-img" src="./img/mock1.jpg">
-            <img class="question-img" src="./img/mock2.jpg">  
-          </div>
-
-          <div class="row row-centered">
-            <img class="question-img" src="./img/mock3.jpg">
-            <img class="question-img" src="./img/mock4.jpg">
-          </div>
+        <div class="row row-centered">
+          <img class="question-img" src="./img/{{unbound question.image3}}">
+          <img class="question-img" src="./img/{{unbound question.image4}}">
         </div>
-    </section>
-  </script>
+      </div>
+    </div>
+  {{/each}}
+
+
+</script>
+
 
   <!-- JAVASCRIPT  -->
   <script src="./js/libs/jquery-1.11.2.min.js"></script>
