@@ -9,27 +9,24 @@
 <body>
 
   <script type="text/x-handlebars" data-template-name="lickr">
-    <div id="main" class="container">
-    <div class="row row-centered">
-      <h3 class="question-text">Question text goes here.</h3>
-    </div>
-    
-    <div id="photos" class="container">
-      <div class="row row-centered">
-          <img class="question-img" src="./img/mock1.jpg">
-          <img class="question-img" src="./img/mock2.jpg">  
-      </div>
-      <div class="row row-centered">
-        <img class="question-img" src="./img/mock3.jpg">
-        <img class="question-img" src="./img/mock4.jpg">
-      </div>
-    </div>
+    <section id="main" class="container">
+      
+        <div class="row row-centered">
+          <h3 class="question-text">Question text here</h3>
+        </div>
 
-    <div class="row row-centered">
-        <button>BACK</button>
-        <button>NEXT</button>
-      </div>
-    </div>
+        <div id="photos" class="container">
+          <div class="row row-centered">
+            <img class="question-img" src="./img/mock1.jpg">
+            <img class="question-img" src="./img/mock2.jpg">  
+          </div>
+
+          <div class="row row-centered">
+            <img class="question-img" src="./img/mock3.jpg">
+            <img class="question-img" src="./img/mock4.jpg">
+          </div>
+        </div>
+    </section>
   </script>
 
   <!-- JAVASCRIPT  -->
@@ -39,5 +36,6 @@
   <script src="./js/libs/ember-data.js"></script>
   <script src="./js/app.js"></script>
   <script src="./js/router.js"></script>
+  <script src="./js/models/question.js"></script>
 </body>
 </html>
