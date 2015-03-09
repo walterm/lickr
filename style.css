@@ -1,0 +1,49 @@
+body {
+    background-color: black;
+}
+
+#main {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    background: black;
+}
+
+.question-text {
+    color: white;
+    text-align: center;
+}
+
+.question-img {
+    height: 200px;
+    width: 200px;
+    /*margin: 10px;*/
+    border: 5px solid white;
+    display: inline;
+    /*padding: 5px;*/
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
+#photos {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.photo-row {
+    float: none;
+    margin: 0 auto;
+}
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
