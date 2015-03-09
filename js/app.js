@@ -1,0 +1,1 @@
+window.Lickr = Ember.Application.create();
