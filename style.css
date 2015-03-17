@@ -25,6 +25,10 @@ body {
     margin-bottom: 5px;
 }
 
+.selected {
+    border: 5px solid red;
+}
+
 #photos {
     margin-left: auto;
     margin-right: auto;
