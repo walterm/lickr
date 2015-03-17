@@ -3,8 +3,7 @@ Lickr.QuestionController = Ember.ObjectController.extend({
         test: function() {
             var current = this.get('model').get('id');
             current = parseInt(current,10) + 1;
-            console.log(current);
-            
+            this.transitionToRoute('question',current);
         }
     }
 });
