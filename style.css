@@ -28,7 +28,7 @@ body {
 .color {
     height: 100px;
     width: 100px; 
-    display: inline;
+    /*display: inline;*/
     margin: 0 auto;
     background: white;
     margin-bottom: 5px;

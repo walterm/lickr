@@ -8,3 +8,13 @@ Lickr.QuestionView = Ember.View.extend({
         });
     }
 });
+
+Lickr.ResultsView = Ember.View.extend({
+    templateName: 'results',
+    didInsertElement: function (){
+        this.$('.color').each(function(index, div){
+            var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+            $(div).css('background', color);
+        });
+    }
+});
