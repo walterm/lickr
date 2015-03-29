@@ -6,6 +6,18 @@ Lickr.QuestionView = Ember.View.extend({
             $('#next').removeAttr('disabled');
             $(this).addClass('selected');
         });
+    },
+
+    willDestroyElement: function() {
+        var winner = this.$(".selected"),
+            losers = this.$("img:not(.selected)"),
+            result = {};
+
+        result[$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"")] = 1;
+
+        $(losers).each(function(index, img){
+            result[$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"")] = 0;
+        });
     }
 });
 
