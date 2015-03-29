@@ -11,13 +11,20 @@ Lickr.QuestionView = Ember.View.extend({
     willDestroyElement: function() {
         var winner = this.$(".selected"),
             losers = this.$("img:not(.selected)"),
+            metric = this.$(winner).attr("metric") == "oversaturated" ?  "55144e864199fe8337b9cc47" : "55144e8b4199fe8337b9cc48";
             result = {};
 
-        result[$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"")] = 1;
+        result["'"+$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"") + "'"] = 1;
 
         $(losers).each(function(index, img){
-            result[$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"")] = 0;
+            result["'"+$(img).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"") + "'"] = 0;
         });
+
+        // qnt.vote(metric, 'data', qnt._user, result, '192.1.1.1', function(data){
+        //     console.log(data);
+        // });
+
+
     }
 });
 
