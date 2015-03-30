@@ -8,14 +8,16 @@ Lickr.QuestionController = Ember.ObjectController.extend({
     actions: {
         test: function() {
             var current = this.get('model').get('id');
-            current = parseInt(current,10) + 1;
+            current = parseInt(current,10) + 1,
+            array = this.get('selectedImages');
+            array = JSON.stringify(array);
 
             if(current > this.get('numModels')){
                 // TODO: post to Flask to do image processing
                 $.ajax({
                     type: 'POST',
                     url: 'http://127.0.0.1:8000/process_imgs',
-                    data: {'imgs': ['test', 'val']}
+                    data: {'imgs': array}
                 }).success(function(data){
                     console.log(data);
                 });
