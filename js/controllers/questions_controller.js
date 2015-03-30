@@ -12,7 +12,14 @@ Lickr.QuestionController = Ember.ObjectController.extend({
 
             if(current > this.get('numModels')){
                 // TODO: post to Flask to do image processing
-                // TODO: redirect to results with hex codes that way
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://127.0.0.1:8000/process_imgs',
+                    data: {'imgs': ['test', 'val']}
+                }).success(function(data){
+                    console.log(data);
+                });
+
                 this.transitionToRoute('results');
             } else this.transitionToRoute('question',current);
         },
