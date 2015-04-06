@@ -2,7 +2,15 @@ from flask import Flask, request
 from cors import crossdomain
 from PIL import Image
 from collections import defaultdict
+from pymongo import MongoClient
+import json
+
+
 app = Flask(__name__)
+client = MongoClient()
+db = client["lickr"]
+questions_collection = db["questions"]
+
 
 def compute_pixel_dict(path):
     colors = defaultdict(int)
@@ -15,12 +23,22 @@ def compute_pixel_dict(path):
 
     return colors
 
+
+@app.route("/api/questions/<int:q_id>")
+#@crossdomain(origin="*")
+def read_question(q_id):
+    obj = questions_collection.find_one({"_id": q_id})
+    obj = {"question": obj}
+    return json.dumps(obj)
+
+
 @app.route("/process_imgs", methods=['POST', 'OPTIONS'])
-@crossdomain(origin='*')
+#@crossdomain(origin='*')
 def process_images():
     # getting img names from post request
     imgs = request.form.getlist('imgs[]')
-    #converting from unicode
+
+    # converting from unicode
     imgs = [str(img) for img in imgs]
 
     filepath = "./img/%s.jpg"
