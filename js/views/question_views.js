@@ -33,7 +33,7 @@ Lickr.ResultsView = Ember.View.extend({
             _.each(data.colors, function (color){
                 console.log(color);
                 var color_div = $("<div class='color'></div>");
-                $(color_div).css("background-color", color.toString());
+                $(color_div).css("background-color", color);
                 $("#results_body").append(color_div);
             });
         });
