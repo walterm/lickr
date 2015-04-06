@@ -9,29 +9,33 @@ Lickr.QuestionView = Ember.View.extend({
     },
 
     willDestroyElement: function() {
-        var winner = this.$(".selected"),
-            losers = this.$("img:not(.selected)"),
-            metric = this.$(winner).attr("metric") == "oversaturated" ?  "55144e864199fe8337b9cc47" : "55144e8b4199fe8337b9cc48";
-            result = {};
-
-        this.get('controller').send("addImage", $(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,""));
-
-        // result["'"+$(winner).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"") + "'"] = 1;
-        // $(losers).each(function(index, img){
-        //     result["'"+$(img).attr("src").replace(/\.\/img\//, "").replace(/\.jpg/,"") + "'"] = 0;
-        // });
-        // qnt.vote(metric, 'data', qnt._user, result, '192.1.1.1', function(data){
-        //     console.log(data);
-        // });
+        var winner = this.$(".selected");
+        console.log($(winner).attr("src").replace(/\.\/img\//, ""));
+        this.get('controller').send("addImage", $(winner).attr("src").replace(/\.\/img\//, ""));
     }
 });
 
 Lickr.ResultsView = Ember.View.extend({
     templateName: 'results',
-    didInsertElement: function (){
-        this.$('.color').each(function(index, div){
-            var color = '#'+Math.floor(Math.random()*16777215).toString(16);
-            $(div).css('background', color);
+    didInsertElement: function () {
+        var images = this.get("controller").get("selectedImages"),
+            array = JSON.stringify(images);
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:8000/process_imgs',
+            data: {'imgs': array}
+        }).success(function(data){
+            data = JSON.parse(data);
+            var colorDivs = [];
+            $("#results_header > h1").empty();
+            $("#results_header > h1").html("Your color palette is");
+            $("#results_body").empty();
+            _.each(data.colors, function (color){
+                console.log(color);
+                var color_div = $("<div class='color'></div>");
+                $(color_div).css("background-color", color.toString());
+                $("#results_body").append(color_div);
+            });
         });
     }
 });

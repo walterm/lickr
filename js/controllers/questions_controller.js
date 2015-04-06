@@ -30,3 +30,8 @@ Lickr.QuestionController = Ember.ObjectController.extend({
         }
     }
 });
+
+Lickr.ResultsController = Ember.ObjectController.extend({
+    needs: ['application'],
+    selectedImages: Ember.computed.alias('controllers.application.selectedImages')
+});
