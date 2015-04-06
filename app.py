@@ -1,5 +1,5 @@
 from flask import Flask, request
-from cors import crossdomain
+# from cors import crossdomain
 from PIL import Image
 from collections import defaultdict
 from pymongo import MongoClient
@@ -34,7 +34,6 @@ def compute_pixel_dict(path):
 
 
 @app.route("/api/questions/<int:q_id>")
-#@crossdomain(origin="*")
 def read_question(q_id):
     obj = questions_collection.find_one({"_id": q_id})
     obj = {"question": obj}
@@ -42,7 +41,6 @@ def read_question(q_id):
 
 
 @app.route("/process_imgs", methods=['POST', 'OPTIONS'])
-#@crossdomain(origin='*')
 def process_images():
     colors = defaultdict(int)
     # getting img names from post request
@@ -56,11 +54,10 @@ def process_images():
         for color, count in pixel_dict.iteritems():
             if type(color) is tuple:
                 colors[color] += count
-    
-    # color_keys = colors.keys()
     color_keys = sorted(colors, key=colors.get, reverse=True)[:4]
     converted = [tohex(key) for key in color_keys]
     return json.dumps({'colors': converted}), 200
+
 
 if __name__ == "__main__":
     app.run(port=8000, host='0.0.0.0', debug=True)
