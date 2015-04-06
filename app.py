@@ -4,6 +4,7 @@ from PIL import Image
 from collections import defaultdict
 from pymongo import MongoClient
 import json
+import ast
 
 
 app = Flask(__name__)
@@ -12,15 +13,23 @@ db = client["lickr"]
 questions_collection = db["questions"]
 
 
+def tohex(color):
+    r, g, b = color
+    hexchars = "0123456789ABCDEF"
+    return "#" \
+        + hexchars[r / 16] \
+        + hexchars[r % 16] \
+        + hexchars[g / 16] \
+        + hexchars[g % 16] \
+        + hexchars[b / 16] \
+        + hexchars[b % 16]
+
+
 def compute_pixel_dict(path):
     colors = defaultdict(int)
     img = Image.open(path)
-    pixels = img.load()
-    w, h = img.size
-    for x in range(w):
-        for y in range(h):
-            colors[pixels[x, y]] += 1
-
+    for count, color in img.getcolors(img.size[0] * img.size[1]):
+        colors[color] += count
     return colors
 
 
@@ -35,20 +44,23 @@ def read_question(q_id):
 @app.route("/process_imgs", methods=['POST', 'OPTIONS'])
 #@crossdomain(origin='*')
 def process_images():
+    colors = defaultdict(int)
     # getting img names from post request
-    imgs = request.form.getlist('imgs[]')
-
-    # converting from unicode
-    imgs = [str(img) for img in imgs]
-
-    filepath = "./img/%s.jpg"
+    imgs = request.form['imgs']
+    imgs = [item.encode('ascii') for item in ast.literal_eval(imgs)]
+    filepath = "./img/%s"
     imgs = [filepath % (img) for img in imgs]
 
     for img in imgs:
-        print img
-        compute_pixel_dict(img)
-
-    return '', 200
+        pixel_dict = compute_pixel_dict(img)
+        for color, count in pixel_dict.iteritems():
+            if type(color) is tuple:
+                colors[color] += count
+    
+    # color_keys = colors.keys()
+    color_keys = sorted(colors, key=colors.get, reverse=True)[:4]
+    converted = [tohex(key) for key in color_keys]
+    return json.dumps({'colors': converted}), 200
 
 if __name__ == "__main__":
     app.run(port=8000, host='0.0.0.0', debug=True)
