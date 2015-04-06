@@ -1,12 +1,7 @@
 Lickr.Question = DS.Model.extend({
     text: DS.attr('string'),
     image1: DS.attr('string'),
-    image2: DS.attr('string'),
-    image3: DS.attr('string'),
-    image4: DS.attr('string'),
-    images: function() {
-        var imgs = [this.get("image1"), this.get("image2"), this.get("image3"), this.get("image4")];
-    }.property("image1", "image2", "image3", "image4")
+    image2: DS.attr('string')
 });
 
 Lickr.Question.FIXTURES = [
