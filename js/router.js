@@ -6,7 +6,7 @@ Lickr.Router.map(function() {
 Lickr.QuestionRoute = Ember.Route.extend({
     setupController: function(controller, model) {     
         controller.set('model', model);
-        controller.set('numModels', 4); // TODO: how can I dynamically code this value?
+        controller.set('numModels', 11); // TODO: get the RESTAdapter to count the number of questions
     },
     model: function (params) {
         return this.store.find('question', params.q_id);
