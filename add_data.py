@@ -24,6 +24,7 @@ questions = [
     [11, "Who’s selfie game is stronger?", "41.jpg", "40.jpg"]
 ]
 
+
 def make_question_object(question):
     q_obj = {}
     q_obj["_id"] = question[0]
