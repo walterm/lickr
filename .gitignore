@@ -3,3 +3,4 @@ env/
 *.pyc
 *.docx
 reddit_pics.txt
+.DS_Store
