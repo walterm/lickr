@@ -12,7 +12,7 @@ HEX_YELLOW = 'ffff00'
 HEX_GREEN = '008000'
 HEX_BLUE = '0000ff'
 HEX_PURPLE = '800080'
-TARGETS = [HEX_RED, HEX_ORANGE, HEX]
+TARGETS = [HEX_RED, HEX_ORANGE, HEX_YELLOW, HEX_GREEN, HEX_BLUE, HEX_PURPLE]
 
 def compute_colors(image_path):
     CLUSTERS = 4
@@ -26,7 +26,6 @@ def compute_colors(image_path):
     codes, dist = scipy.cluster.vq.kmeans(ar, CLUSTERS)
     vecs, dist = scipy.cluster.vq.vq(ar, codes)
     counts, bins = scipy.histogram(vecs, len(codes))
-    print counts, bins
 
     # HEX Codes
     return [''.join(chr(c) for c in code).encode('hex') for code in codes]
