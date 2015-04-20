@@ -8,10 +8,6 @@ from bs4 import BeautifulSoup
 images = defaultdict(bool)
 
 
-def get_imgur_pic(parsed_url):
-    pass
-
-
 def get_flickr_pic(link, counter):
     global images  # sadface
     request = urlopen(link)
@@ -44,6 +40,5 @@ with open('reddit_pics.txt', 'r') as f:
                 link = 'http://i.imgur.com/' + link + '.jpg'
                 urllib.urlretrieve(link, './imgs/'+str(counter) + '.jpg')
                 counter += 1
-
         elif parsed_url.netloc == 'www.flickr.com' or parsed_url.netloc == 'flic.kr':
             counter = get_flickr_pic(link, counter)
