@@ -32,6 +32,18 @@ with open('reddit_pics.txt', 'r') as f:
     for link in links:
         parsed_url = urlparse(link)
         if parsed_url.netloc == 'i.imgur.com':
-            print link
-            urllib.urlretrieve(link, './imgs/'+str(counter) + '.jpg')
-            counter += 1
+            if not images[parsed_url.path]:
+                images[parsed_url.path] = True
+                urllib.urlretrieve(link, './imgs/'+str(counter) + '.jpg')
+                counter += 1
+        elif parsed_url.netloc == 'imgur.com':
+
+            link = link.split('/')[3]
+            if not images["/" + link + ".jpg"]:
+                images["/" + link + ".jpg"] = True
+                link = 'http://i.imgur.com/' + link + '.jpg'
+                urllib.urlretrieve(link, './imgs/'+str(counter) + '.jpg')
+                counter += 1
+
+        elif parsed_url.netloc == 'www.flickr.com' or parsed_url.netloc == 'flic.kr':
+            counter = get_flickr_pic(link, counter)
