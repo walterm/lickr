@@ -1,4 +1,5 @@
 imgs/*
+env/
 *.pyc
 *.docx
 reddit_pics.txt
