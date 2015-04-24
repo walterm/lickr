@@ -7,6 +7,12 @@ import json
 import ast
 
 
+class ColorState():
+    def __init__(self):
+        self.cd = defaultdict(float)
+        self.favorite = ''
+
+cs = ColorState()
 app = Flask(__name__)
 client = MongoClient()
 db = client["lickr"]
