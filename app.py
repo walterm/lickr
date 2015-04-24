@@ -3,6 +3,7 @@ from flask import Flask, request
 from PIL import Image
 from collections import defaultdict
 from pymongo import MongoClient
+import scripts
 import json
 import ast
 
@@ -63,6 +64,18 @@ def process_images():
     color_keys = sorted(colors, key=colors.get, reverse=True)[:4]
     converted = [tohex(key) for key in color_keys]
     return json.dumps({'colors': converted}), 200
+
+
+# TODO: this route might not make sense if we can do it from Ember
+@app.route("/favorite", methods=["POST"])
+def set_favorite():
+    cs.favorite = str(request.form['favorite'])
+    return json.dumps({})
+
+
+@app.route("/palette", methods=["GET"])
+def return_palette():
+    return json.dumps(cs.cd)
 
 
 if __name__ == "__main__":
