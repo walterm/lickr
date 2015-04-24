@@ -53,7 +53,27 @@ def compute_closest(hex_code):
 
     for i in range(1, len(TARGETS)):
         c = compute_rgb(TARGETS[i])
-        if compute_norm(rgb, c) < similiar: # The smaller, the more similar
+        if compute_norm(rgb, c) < similiar:  # The smaller, the more similar
             similiar = compute_norm(rgb, c)
             index = i
-    return TARGETS[i]
+    return TARGETS[index]
+
+
+def compute_confidence(conf_dict, hex_codes):
+    updated = {key: False for key in conf_dict.keys()}
+
+    for code in hex_codes:
+        if code not in conf_dict:
+            conf_dict[code] = 0.5
+        else:
+            updated[code] = True
+            conf_dict[code] *= 1.5
+
+    not_updated = [key for key in updated.keys() if not updated[key]]
+    for code in not_updated:
+        conf_dict[code] *= 0.5
+
+    factor = 1.0 / sum(conf_dict.itervalues())
+    for k in conf_dict:
+        conf_dict[k] = conf_dict[k] * factor
+    return conf_dict
