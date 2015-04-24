@@ -4,7 +4,6 @@ import scipy.misc
 import scipy.cluster
 import numpy as np
 from numpy.linalg import norm
-import sys
 
 HEX_RED = 'ff0000'
 HEX_ORANGE = 'ffa500'
@@ -13,6 +12,7 @@ HEX_GREEN = '008000'
 HEX_BLUE = '0000ff'
 HEX_PURPLE = '800080'
 TARGETS = [HEX_RED, HEX_ORANGE, HEX_YELLOW, HEX_GREEN, HEX_BLUE, HEX_PURPLE]
+
 
 def compute_colors(image_path):
     CLUSTERS = 4
