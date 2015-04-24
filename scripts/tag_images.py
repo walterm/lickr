@@ -30,6 +30,7 @@ def compute_colors(image_path):
     # HEX Codes
     return [''.join(chr(c) for c in code).encode('hex') for code in codes]
 
+
 def compute_closest(hex_code):
     '''L2 norm.'''
 
