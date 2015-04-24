@@ -78,3 +78,8 @@ def compute_confidence(conf_dict, hex_codes):
     for k in conf_dict:
         conf_dict[k] = conf_dict[k] * factor
     return conf_dict
+
+
+def compute_top_colors(conf_dict):
+    codes = sorted(conf_dict.keys(), key=conf_dict.get, reverse=True)[:4]
+    return codes
