@@ -41,6 +41,37 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="start">
+  <div class="container">
+      <h1 class="question-text">Select your favorite base color.</h1>
+      <div class="row row-center" id="results_body_top">
+        <div class="color" style="background-color: red;">
+          <p class="code">Red</p>
+        </div>
+        <div class="color" style="background-color: orange;">
+          <p class="code">Orange</p>
+        </div>
+        <div class="color" style="background-color: yellow;">
+          <p class="code">Yellow</p>
+        </div>
+      </div>
+      <div class="row row-center" id="results_body_bottom">
+      <div class="color" style="background-color: green;">
+          <p class="code">Green</p>
+        </div>
+        <div class="color" style="background-color: blue;">
+          <p class="code">Blue</p>
+        </div>
+        <div class="color" style="background-color: purple;">
+          <p class="code">Purple</p>
+        </div>
+      </div>
+      <div class="row row-centered">
+        <button id="next" disabled class="btn" {{action 'favorite'}}>NEXT</button>
+      </div>
+  </div>
+</script>
+
 
   <!-- JAVASCRIPT  -->
   <script src="./js/libs/jquery-1.11.2.min.js"></script>

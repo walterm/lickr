@@ -39,8 +39,8 @@ body {
     width: 200px; 
     margin: 0 auto;
     background: white;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    margin-bottom: 20px;
+    margin-left: 20px;
     display: inline-block;
 }
 
@@ -55,6 +55,10 @@ body {
 
 .selected {
     border: 5px solid red;
+}
+
+.color-selected {
+    border: 2px solid white;
 }
 
 #photos {
