@@ -38,7 +38,8 @@ Lickr.StartController = Ember.Controller.extend({
             };
             var fave = $(".color-selected");
             this.get('confDict')[colorToCode[$(fave).find(".code").html()]] = 0.5;
-            console.log(this.get('confDict'));
+
+            this.transitionToRoute('question');
         }
     }
 });

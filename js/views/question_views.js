@@ -26,13 +26,20 @@ Lickr.QuestionView = Ember.View.extend({
                 return confDict[b] - confDict[a]; // descending order
             });
 
-            return colors.slice(0,4); // top 4
+            colors = colors.slice(0,4); // top 4
+            var d = {};
+            _.each(colors, function(color){
+                d[color] = confDict[color];
+            });
+            return d;
         };
-
-        $.get('/get_imgs',{ "choices[]": getTopColors(this.get('controller.confDict'))})
+        $.get('http://localhost:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
             .done(function(images, index){
+                images = $.parseJSON(images);
+                console.log(images.imgs);
                 var row = createRow();
-                _.each(images, function (path){
+                _.each(images.imgs, function (path){
+                    console.log(path);
                     $(row).append(createImg(path));
                     if(index +1 % 3 === 0) {
                         $("#photos").append(row);
