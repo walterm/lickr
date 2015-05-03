@@ -14,9 +14,6 @@ Lickr.QuestionController = Ember.Controller.extend({
             // if(current > this.get('numModels')){
             //     this.transitionToRoute('results');
             // } else this.transitionToRoute('question');
-        },
-        addImage: function(img) {
-            this.get('selectedColors').push(img);
         }
     }
 });

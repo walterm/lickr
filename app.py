@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, request
 # from cors import crossdomain
 from PIL import Image
 from collections import defaultdict
 from pymongo import MongoClient
-import scripts
+import scripts.tag_images as tag_images
 import json
 import ast
 
@@ -18,6 +19,7 @@ app = Flask(__name__)
 client = MongoClient()
 db = client["lickr"]
 questions_collection = db["questions"]
+images_collection = db["images"]
 
 
 def tohex(color):

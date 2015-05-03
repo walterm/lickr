@@ -1,17 +1,69 @@
+function createRow(){
+    return $('<div class="row row-centered"></div>');
+}
+
+function createImg(img_path){
+    var img= $('<img class="question-img">');
+    $(img).attr('src', "./imgs/"+img_path+".jpg");
+    $(img).click(function(){
+        $("#next").attr("disabled", false);
+        $(".selected").removeClass("selected");
+        $(this).addClass("selected");
+    });
+    return img;
+}
+
 Lickr.QuestionView = Ember.View.extend({
     templateName: 'question',
     didInsertElement: function () {
-        this.$('img').click(function(evt){
-            $('.selected').removeClass('selected');
-            $('#next').removeAttr('disabled');
-            $(this).addClass('selected');
-        });
+        // do we still need to ask a question? (assume yes if we're here)
+        // ping the server for images (pass in the current top 4)
+        // when done, insert the images
+
+        var getTopColors = function(confDict){
+            var colors = Object.keys(confDict);
+            colors.sort(function(a, b){
+                return confDict[b] - confDict[a]; // descending order
+            });
+
+            return colors.slice(0,4); // top 4
+        };
+
+        $.get('/get_imgs',{ "choices[]": getTopColors(this.get('controller.confDict'))})
+            .done(function(images, index){
+                var row = createRow();
+                _.each(images, function (path){
+                    $(row).append(createImg(path));
+                    if(index +1 % 3 === 0) {
+                        $("#photos").append(row);
+                        row = createRow();
+                    }
+                });
+                $("#photos").append(row);
+            });
+
+
+
     },
 
     willDestroyElement: function() {
-        var winner = this.$(".selected");
-        console.log($(winner).attr("src").replace(/\.\/img\//, ""));
-        this.get('controller').send("addImage", $(winner).attr("src").replace(/\.\/img\//, ""));
+
+    }
+});
+
+Lickr.StartView = Ember.View.extend({
+    templateName: 'start',
+    didInsertElement: function () {
+        this.$(".code").click(function(evt){
+            $('.color-selected').removeClass('color-selected');
+            $('#next').removeAttr('disabled');
+            $(evt.target).parent().addClass('color-selected');
+        });
+    },
+    willDestroyElement: function() {
+        var fave = this.$(".color-selected");
+        console.log($(fave).find(".code").html());
+        this.get('controller').send('favorite', $(fave).find(".code").html());
     }
 });
 
