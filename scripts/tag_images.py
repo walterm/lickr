@@ -83,3 +83,25 @@ def compute_confidence(conf_dict, hex_codes):
 def compute_top_colors(conf_dict):
     codes = sorted(conf_dict.keys(), key=conf_dict.get, reverse=True)[:4]
     return codes
+
+
+def compute_conf_img_similarity(conf_dict, img):
+    def compute_norm(c1, c2):
+        a = np.array(c1)
+        b = np.array(c2)
+        return norm(a-b)
+    codes = compute_top_colors(conf_dict)
+    similarity = 0.
+    for i in range(len(codes)):
+        code = (
+            int(codes[i][0:2].encode('hex')),
+            int(codes[i][2:4].encode('hex')),
+            int(codes[i][4:].encode('hex'))
+        )
+        color = (
+            int(img['top_colors'][i][0:2].encode('hex')),
+            int(img['top_colors'][i][2:4].encode('hex')),
+            int(img['top_colors'][i][4:].encode('hex'))
+        )
+        similarity += (compute_norm(code, color)) * conf_dict[codes[i]]
+    return similarity
