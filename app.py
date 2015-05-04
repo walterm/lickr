@@ -38,7 +38,7 @@ def convert_args_dict(args):
     def convert_key(string):
         start = string.index('[') + 3
         return string[start:-1]
-    return {convert_key(key): args[key] for key in args.keys()}
+    return {convert_key(key): float(args[key]) for key in args.keys()}
 
 
 def compute_pixel_dict(path):
@@ -92,11 +92,19 @@ def get_imgs():
     similarity = defaultdict(float)
     colors = convert_args_dict(request.args)
     colors = [tag_images.compute_closest(color) for color in colors]
-    for img in images_collection.find({"main": {"$in": colors}}):
+    img_results = images_collection.find({"main": {"$in": colors}})
+    for img in img_results:
         img_id = img['_id']
         similarity[img_id] = tag_images.compute_conf_img_similarity(cs.cd, img)
     imgs = sorted(similarity.keys(), key=similarity.get, reverse=True)[:4]
-    return json.dumps({"imgs": imgs})
+    img_objs = []
+    img_results.rewind()
+    for img in img_results:
+        if img['_id'] in imgs:
+            img_objs.append(img)
+
+    print imgs
+    return json.dumps({"imgs": img_objs})
 
 if __name__ == "__main__":
     app.run(port=8000, host='0.0.0.0', debug=True)
