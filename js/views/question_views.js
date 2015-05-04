@@ -40,7 +40,7 @@ Lickr.QuestionView = Ember.View.extend({
                 var row = createRow();
                 _.each(images.imgs, function (path){
                     console.log(path);
-                    $(row).append(createImg(path));
+                    $(row).append(createImg(path['_id']));
                     if(index +1 % 3 === 0) {
                         $("#photos").append(row);
                         row = createRow();

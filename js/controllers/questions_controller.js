@@ -1,5 +1,30 @@
 Lickr.ApplicationController = Ember.Controller.extend({
-    confDict: {}
+    confDict: {},
+    actions: {
+        addColor: function (hex_code) {
+            var dict = this.get("confDict"),
+                keys = Object.keys(dict);
+
+            if(_.find(keys, function(key){return key === hex_code}) !== undefined){
+                dict[key] *= 1.5
+            } else {
+                dict[key] = 0.5
+            }
+        },
+        getTopColors: function(confDict){
+            var colors = Object.keys(this.get("confDict"));
+            colors.sort(function(a, b){
+                return confDict[b] - confDict[a]; // descending order
+            });
+
+            colors = colors.slice(0,4); // top 4
+            var d = {};
+            _.each(colors, function(color){
+                d[color] = confDict[color];
+            });
+            return d;
+        }
+    }
 });
 
 Lickr.QuestionController = Ember.Controller.extend({
