@@ -4,4 +4,4 @@ Lickr.Router.map(function() {
     this.resource('start', {path: '/'});
 });
 
-Lickr.QuestionRoute = Ember.Route.extend({ });
+Lickr.QuestionRoute = Ember.Route.extend({});

@@ -1,6 +1,19 @@
 Lickr.ApplicationController = Ember.Controller.extend({
-    confDict: {},
+    confDict: {}
+});
+
+Lickr.QuestionController = Ember.Controller.extend({
+    needs: ['application'],
+    confDict: Ember.computed.alias('controllers.application.confDict'),
+    currentImgs: [],
     actions: {
+        addCurrentImg: function(img_obj){
+            this.get('currentImgs').push(img_obj);
+        },
+        findImg: function(img_id){
+            var imgs = this.get('currentImgs');
+            return _.find(imgs, function(img){ return img['_id'] == img_id; }); // should for sure be there
+        },
         addColor: function (hex_code) {
             var dict = this.get("confDict"),
                 keys = Object.keys(dict);
@@ -11,37 +24,9 @@ Lickr.ApplicationController = Ember.Controller.extend({
                 dict[key] = 0.5
             }
         },
-        getTopColors: function(confDict){
-            var colors = Object.keys(this.get("confDict"));
-            colors.sort(function(a, b){
-                return confDict[b] - confDict[a]; // descending order
-            });
 
-            colors = colors.slice(0,4); // top 4
-            var d = {};
-            _.each(colors, function(color){
-                d[color] = confDict[color];
-            });
-            return d;
-        }
-    }
-});
-
-Lickr.QuestionController = Ember.Controller.extend({
-    needs: ['application'],
-    confDict: Ember.computed.alias('controllers.application.confDict'),
-    currentImgs: [],
-    actions: {
-        test: function() {
-            // var current = this.get('model').get('id');
-            // current = parseInt(current,10) + 1;
-
-            // if(current > this.get('numModels')){
-            //     this.transitionToRoute('results');
-            // } else this.transitionToRoute('question');
-        },
-        addCurrentImg: function(img_obj){
-            this.get('currentImgs').push(img_obj);
+        advance: {
+            
         }
     }
 });

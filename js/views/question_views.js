@@ -33,13 +33,12 @@ Lickr.QuestionView = Ember.View.extend({
             });
             return d;
         };
+        
         $.get('http://localhost:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
             .done(function(images, index){
                 images = $.parseJSON(images);
-                console.log(images.imgs);
                 var row = createRow();
                 _.each(images.imgs, function (path){
-                    console.log(path);
                     $(row).append(createImg(path['_id']));
                     if(index +1 % 3 === 0) {
                         $("#photos").append(row);
