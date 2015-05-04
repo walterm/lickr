@@ -30,7 +30,7 @@ Lickr.ApplicationController = Ember.Controller.extend({
 Lickr.QuestionController = Ember.Controller.extend({
     needs: ['application'],
     confDict: Ember.computed.alias('controllers.application.confDict'),
-
+    currentImgs: [],
     actions: {
         test: function() {
             // var current = this.get('model').get('id');
@@ -39,6 +39,9 @@ Lickr.QuestionController = Ember.Controller.extend({
             // if(current > this.get('numModels')){
             //     this.transitionToRoute('results');
             // } else this.transitionToRoute('question');
+        },
+        addCurrentImg: function(img_obj){
+            this.get('currentImgs').push(img_obj);
         }
     }
 });
