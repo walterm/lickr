@@ -20,7 +20,7 @@ var getTopColors = function(confDict){
 Lickr.QuestionController = Ember.Controller.extend({
     needs: ['application'],
     confDict: Ember.computed.alias('controllers.application.confDict'),
-    currentQuestion: Ember.computer.alias('controllers.application.currentQuestion'),
+    currentQuestion: Ember.computed.alias('controllers.application.currentQuestion'),
     currentImgs: [],
     selectedImg: undefined,
     nextQuestion: false,
@@ -30,7 +30,6 @@ Lickr.QuestionController = Ember.Controller.extend({
         },
         findImg: function(img_id){
             var imgs = this.get('currentImgs');
-            console.log( _.find(imgs, function(img){ return img['_id'] == img_id; }));
             this.set('selectedImg', _.find(imgs, function(img){ return img['_id'] == img_id; }))
         },
         updateConfDict: function(colors) {
@@ -59,15 +58,17 @@ Lickr.QuestionController = Ember.Controller.extend({
 
             var factor = _.values(confDict).reduce(function(a,b){return a+b}, 0);
 
-            _.each(_.keys(confDict), function(k){ console.log(k); confDict[k] /= factor;});
+            _.each(_.keys(confDict), function(k){ confDict[k] /= factor;});
 
             var top = getTopColors(confDict);
             var sum = _.reduce(_.values(top), function(a, b){ return a+b;});
-            // console.log(confDict);
-            console.log(sum);
-            console.log(top);
-            console.log(sum > 0.9 && _.keys(top) === 4);
-            this.set('nextQuestion', sum > 0.9 && _.keys(top) === 4);
+            var next;
+            if(sum > 0.9){
+                if(_.keys(top).length < 4){
+                    next = true;
+                } else next = false;
+            } else next = true;
+            this.set('nextQuestion', next);
         },
         addColor: function (hex_code) {
             var dict = this.get("confDict"),
@@ -87,8 +88,10 @@ Lickr.QuestionController = Ember.Controller.extend({
             var img_colors = this.get('selectedImg')['top_colors'];
             this.send('updateConfDict', img_colors);
             // if we're confident redirect to results
-            if(!this.get('nextQuestion')) {
-                window.location.reload(true);
+            if(this.get('nextQuestion')) {
+                var next = this.get('currentQuestion') + 1;
+                this.set('currentQuestion', next);
+                this.transitionToRoute('question', next);
             } else {
                 this.transitionToRoute('results');
             }
@@ -118,7 +121,7 @@ Lickr.StartController = Ember.Controller.extend({
             var fave = $(".color-selected");
             this.get('confDict')[colorToCode[$(fave).find(".code").html()]] = 0.5;
 
-            this.transitionToRoute('question');
+            this.transitionToRoute('question', 1);
         }
     }
 });
