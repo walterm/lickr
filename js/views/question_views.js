@@ -5,6 +5,7 @@ function createRow(){
 function createImg(img_path){
     var img= $('<img class="question-img">');
     $(img).attr('src', "./imgs/"+img_path+".jpg");
+    $(img).attr('img_id', img_path);
     $(img).click(function(){
         $("#next").attr("disabled", false);
         $(".selected").removeClass("selected");
@@ -33,12 +34,13 @@ Lickr.QuestionView = Ember.View.extend({
             });
             return d;
         };
-        
+        var controller = this.get('controller');
         $.get('http://localhost:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
             .done(function(images, index){
                 images = $.parseJSON(images);
-                var row = createRow();
+                var row = createRow()
                 _.each(images.imgs, function (path){
+                    controller.send('addImg', path);
                     $(row).append(createImg(path['_id']));
                     if(index +1 % 3 === 0) {
                         $("#photos").append(row);
@@ -68,7 +70,6 @@ Lickr.StartView = Ember.View.extend({
     },
     willDestroyElement: function() {
         var fave = this.$(".color-selected");
-        console.log($(fave).find(".code").html());
         this.get('controller').send('favorite', $(fave).find(".code").html());
     }
 });
@@ -85,7 +86,6 @@ Lickr.ResultsView = Ember.View.extend({
         }).success(function(data){
             var colorDivs = [];
             data = JSON.parse(data);
-            
             $("#results_header > h1").empty();
             $("#results_header > h1").html("Your color palette is...");
             $("#results_body_top").empty();
