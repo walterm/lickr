@@ -75,6 +75,7 @@ def get_imgs():
     for img in img_results:
         if img['_id'] in imgs:
             img_objs.append(img)
+    img_results.close()
     return json.dumps({"imgs": img_objs})
 
 if __name__ == "__main__":
