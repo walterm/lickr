@@ -6,7 +6,7 @@ from collections import defaultdict
 from pymongo import MongoClient
 import scripts.tag_images as tag_images
 import json
-import ast
+from scripts.cors import crossdomain
 
 
 class ColorState():
@@ -20,6 +20,7 @@ client = MongoClient()
 db = client["lickr"]
 questions_collection = db["questions"]
 images_collection = db["images"]
+results = db["results"]
 
 
 def tohex(color):
@@ -49,45 +50,17 @@ def compute_pixel_dict(path):
     return colors
 
 
-@app.route("/api/questions/<int:q_id>")
-def read_question(q_id):
-    obj = questions_collection.find_one({"_id": q_id})
-    obj = {"question": obj}
-    return json.dumps(obj)
-
-
-@app.route("/process_imgs", methods=['POST', 'OPTIONS'])
-def process_images():
-    colors = defaultdict(int)
-    # getting img names from post request
-    imgs = request.form['imgs']
-    imgs = [item.encode('ascii') for item in ast.literal_eval(imgs)]
-    filepath = "./img/%s"
-    imgs = [filepath % (img) for img in imgs]
-
-    for img in imgs:
-        pixel_dict = compute_pixel_dict(img)
-        for color, count in pixel_dict.iteritems():
-            if type(color) is tuple:
-                colors[color] += count
-    color_keys = sorted(colors, key=colors.get, reverse=True)[:4]
-    converted = [tohex(key) for key in color_keys]
-    return json.dumps({'colors': converted}), 200
-
-
-# TODO: this route might not make sense if we can do it from Ember
-@app.route("/favorite", methods=["POST"])
-def set_favorite():
-    cs.favorite = str(request.form['favorite'])
+@app.route("/results", methods=["POST"])
+@crossdomain(origin='*')
+def save_results():
+    colors = request.form.getlist('colors[]')
+    colors = [str(color) for color in colors]
+    results.insert({'colors': colors})
     return json.dumps({})
 
 
-@app.route("/palette", methods=["GET"])
-def return_palette():
-    return json.dumps(cs.cd)
-
-
 @app.route("/get_imgs", methods=["GET"])
+@crossdomain(origin='*')
 def get_imgs():
     similarity = defaultdict(float)
     colors = convert_args_dict(request.args)

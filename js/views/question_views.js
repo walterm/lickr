@@ -76,32 +76,34 @@ Lickr.StartView = Ember.View.extend({
 
 Lickr.ResultsView = Ember.View.extend({
     templateName: 'results',
+    willInsertElement: function () {
+        var top = getTopColors(this.get('controller.confDict'));
+        var colors = _.keys(top);
+        $.post('http://localhost:8000/results', {'colors': colors});
+    },
     didInsertElement: function () {
         var images = this.get("controller").get("selectedImages"),
             array = JSON.stringify(images);
-        $.ajax({
-            type: 'POST',
-            url: 'http://127.0.0.1:8000/process_imgs',
-            data: {'imgs': array}
-        }).success(function(data){
-            var colorDivs = [];
-            data = JSON.parse(data);
-            $("#results_header > h1").empty();
-            $("#results_header > h1").html("Your color palette is...");
-            $("#results_body_top").empty();
-            for(var i = 0; i < data.colors.length; i++){
-                var color = data.colors[i],
-                    color_div = $("<div class='color'></div>"),
-                    code_div = $("<p class='code'></p>");
-                $(color_div).css("background-color", color);
-                $(code_div).html(color);
-                $(color_div).append(code_div);
-                if(i < 2) {;
-                    $("#results_body_top").append(color_div);
-                } else {
-                    $("#results_body_bottom").append(color_div);
-                }
+
+        var top = getTopColors(this.get('controller.confDict'));
+        var colors = _.keys(top);
+        var colorDivs = [];
+        
+        $("#results_header > h1").empty();
+        $("#results_header > h1").html("Your color palette is...");
+        $("#results_body_top").empty();
+        for(var i = 0; i < colors.length; i++){
+            var color = colors[i],
+                color_div = $("<div class='color'></div>"),
+                code_div = $("<p class='code'></p>");
+            $(color_div).css("background-color", "#"+color);
+            $(code_div).html(color);
+            $(color_div).append(code_div);
+            if(i < 2) {;
+                $("#results_body_top").append(color_div);
+            } else {
+                $("#results_body_bottom").append(color_div);
             }
-        });
+        }
     }
 });
