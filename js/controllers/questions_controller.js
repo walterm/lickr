@@ -88,7 +88,7 @@ Lickr.QuestionController = Ember.Controller.extend({
             var img_colors = this.get('selectedImg')['top_colors'];
             this.send('updateConfDict', img_colors);
             // if we're confident redirect to results
-            if(this.get('currentQuestion') > 15 || this.get('nextQuestion')) {
+            if(this.get('currentQuestion') < 10 && this.get('nextQuestion')) {
                 var next = this.get('currentQuestion') + 1;
                 this.set('currentQuestion', next);
                 this.transitionToRoute('question', next);
