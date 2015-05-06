@@ -1,6 +1,7 @@
 Lickr.ApplicationController = Ember.Controller.extend({
     confDict: {},
-    currentQuestion: 1
+    currentQuestion: 1,
+    seenImgs: []
 });
 
 var getTopColors = function(confDict){
@@ -21,15 +22,18 @@ Lickr.QuestionController = Ember.Controller.extend({
     needs: ['application'],
     confDict: Ember.computed.alias('controllers.application.confDict'),
     currentQuestion: Ember.computed.alias('controllers.application.currentQuestion'),
+    seenImgs: Ember.computed.alias('controllers.application.seenImgs'),
     currentImgs: [],
     selectedImg: undefined,
     nextQuestion: false,
     actions: {
         addImg: function(img_obj){
             this.get('currentImgs').push(img_obj);
+
         },
         findImg: function(img_id){
             var imgs = this.get('currentImgs');
+            this.get('seenImgs').push(img_id);
             this.set('selectedImg', _.find(imgs, function(img){ return img['_id'] == img_id; }))
         },
         updateConfDict: function(colors) {
