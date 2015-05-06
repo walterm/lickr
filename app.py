@@ -47,21 +47,25 @@ def process_palette():
 @app.route("/get_imgs", methods=["GET"])
 @crossdomain(origin='*')
 def get_imgs():
-    similarity = defaultdict(float)
-    colors_dict = convert_args_dict(request.args)
-    colors = [tag_images.compute_closest(color) for color in colors_dict.keys()]
-    img_results = images_collection.find({"main": {"$in": colors}})
-    for img in img_results:
-        img_id = img['_id']
-        similarity[img_id] = tag_images.compute_conf_img_similarity(colors_dict, img)
-    imgs = sorted(similarity.keys(), key=similarity.get, reverse=True)[:4]
-    img_objs = []
-    img_results.rewind()
-    for img in img_results:
-        if img['_id'] in imgs:
-            img_objs.append(img)
-    img_results.close()
-    return json.dumps({"imgs": img_objs})
+    try:
+        similarity = defaultdict(float)
+        colors_dict = convert_args_dict(request.args)
+        colors = [tag_images.compute_closest(color) for color in colors_dict.keys()]
+        img_results = images_collection.find({"main": {"$in": colors}})
+        for img in img_results:
+            img_id = img['_id']
+            similarity[img_id] = tag_images.compute_conf_img_similarity(colors_dict, img)
+        imgs = sorted(similarity.keys(), key=similarity.get, reverse=True)[:4]
+        img_objs = []
+        img_results.rewind()
+        for img in img_results:
+            if img['_id'] in imgs:
+                img_objs.append(img)
+        img_results.close()
+        return json.dumps({"imgs": img_objs})
+    except:
+        imgs = tag_images.random_images(images_collection)
+        return json.dumps({"imgs": img_objs})
 
 if __name__ == "__main__":
     app.run(port=8000, host='0.0.0.0', debug=True)

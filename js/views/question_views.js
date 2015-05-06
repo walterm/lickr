@@ -41,7 +41,7 @@ Lickr.QuestionView = Ember.View.extend({
         var controller = this.get('controller'),
             seenImgs = controller.get('seenImgs');
 
-        $.get('http://localhost:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
+        $.get('http://104.236.64.180:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
             .done(function(images, index){
 
                 images = $.parseJSON(images);
@@ -97,7 +97,7 @@ Lickr.ResultsView = Ember.View.extend({
         var colors = _.keys(top);
         var colorDivs = [];
 
-        $.post('http://localhost:8000/palette', {colors: Object.keys(this.get('controller.confDict'))})
+        $.post('http://104.236.64.180:8000/palette', {colors: Object.keys(this.get('controller.confDict'))})
             .done(function(data){
                 $("#results_header > h1").html("Your color palette is...");
                 $("#results_body_top").empty();

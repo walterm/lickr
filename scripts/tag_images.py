@@ -18,6 +18,9 @@ TARGETS = [HEX_RED, HEX_ORANGE, HEX_YELLOW, HEX_GREEN, HEX_BLUE, HEX_PURPLE]
 def compute_rgb(hex_code):
     return struct.unpack('BBB', hex_code.decode('hex'))
 
+def rgb_to_hex(rgb):
+    return '%02x%02x%02x' % rgb
+
 
 def palette_cluster(hex_codes):
     rgb_colors = [compute_rgb(code) for code in hex_codes]
@@ -34,9 +37,6 @@ def random_palette(hex_codes):
         division = len(lst) / float(n) 
         return [ lst[int(round(division * i)): int(round(division * (i + 1)))] for i in xrange(n) ]
 
-    def rgb_to_hex(rgb):
-        return '%02x%02x%02x' % rgb
-
     from random import shuffle
 
     rgb_colors = [compute_rgb(code) for code in hex_codes]
@@ -49,6 +49,20 @@ def random_palette(hex_codes):
         averages.append(avg)
     averages = [rgb_to_hex(avg) for avg in averages]
     return averages
+
+
+def random_images(imgs):
+    from random import sample
+    ids = imgs.distinct('_id')
+    selected = choice(ids, 4)
+    return list(imgs.find({'_id':{'$in':selected}}))
+
+
+def average(top_colors):
+    colors = [compute_rgb(code) for code in top_colors]
+    avg = [sum(c) / len(c) for c in zip(*colors)]
+    avg = rgb_to_hex(tuple(avg))
+    return avg
 
 
 def compute_colors(image_path):
@@ -64,8 +78,12 @@ def compute_colors(image_path):
     vecs, dist = scipy.cluster.vq.vq(ar, codes)
     counts, bins = scipy.histogram(vecs, len(codes))
 
+    index_max = scipy.argmax(counts)
+    peak = codes[index_max]
+    colour = ''.join(chr(c) for c in peak).encode('hex')
+
     # HEX Codes
-    return [''.join(chr(c) for c in code).encode('hex') for code in codes]
+    return ([''.join(chr(c) for c in code).encode('hex') for code in codes], colour)
 
 
 def compute_closest(hex_code):

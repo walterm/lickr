@@ -8,7 +8,7 @@ sys.path.append('/Users/walterm/Development/lickr/')
 import glob
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
-from scripts.tag_images import compute_colors, compute_closest
+from scripts.tag_images import compute_colors, compute_closest, average
 
 # Setting up the Mongo connection
 client = MongoClient()
@@ -23,8 +23,8 @@ pictures = glob.glob('../imgs/*.jpg')
 for pic in pictures:
     print pic
     img_num = pic.split('/')[2].split('.')[0]
-    top_colors = compute_colors(pic)
-    most_similar = compute_closest(top_colors[0])
+    top_colors, most = compute_colors(pic)
+    most_similar = compute_closest(most)
     obj = None
     try:
         obj = {
