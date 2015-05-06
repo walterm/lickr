@@ -66,13 +66,6 @@ Lickr.QuestionController = Ember.Controller.extend({
 
             var top = getTopColors(confDict);
             var sum = _.reduce(_.values(top), function(a, b){ return a+b;});
-            var next;
-            if(sum > 0.9){
-                if(_.keys(top).length < 4){
-                    next = true;
-                } else next = false;
-            } else next = true;
-            this.set('nextQuestion', next);
         },
         addColor: function (hex_code) {
             var dict = this.get("confDict"),
@@ -92,7 +85,7 @@ Lickr.QuestionController = Ember.Controller.extend({
             var img_colors = this.get('selectedImg')['top_colors'];
             this.send('updateConfDict', img_colors);
             // if we're confident redirect to results
-            if(this.get('currentQuestion') < 10 && this.get('nextQuestion')) {
+            if(this.get('currentQuestion') < 15) {
                 var next = this.get('currentQuestion') + 1;
                 this.set('currentQuestion', next);
                 this.transitionToRoute('question', next);
