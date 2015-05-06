@@ -10,11 +10,11 @@
 <script type="text/x-handlebars" data-template-name="question">
   <div class="container">
       <div class="row row-centered">
-        <h3 class="question-text">Pick the most appealing photo for you.</h3>
+        <h3 class="question-text">From here on out, just pick the image that appeals to you the most.</h3>
+        <h6 class="question-text">Define "appealing" however you want to.</h6>
       </div>
 
       <div id="photos" class="container">
-        
       </div>
     </div>
 
@@ -35,12 +35,17 @@
       </div>
       <div class="row row-center" id="results_body_bottom">
       </div>
+
+      <div class="row row-centered">
+        <button id="next" class="btn" {{action 'restart'}}>TAKE ANOTHER LICKR QUIZ</button>
+
+      </div>
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="start">
   <div class="container">
-      <h1 class="question-text">Select your favorite base color.</h1>
+      <h1 class="question-text">First, select your favorite color of the rainbow.</h1>
       <div class="row row-center" id="results_body_top">
         <div class="color" style="background-color: red;">
           <p class="code">Red</p>
@@ -69,6 +74,23 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="info">
+  <div class="container">
+    <h1 class="question-text">Welcome to Lickr!</h1>
+    <h3 class="question-text">Lickr is a fun, image-based questionaire that helps you explore what color palettes you might like.</h3>
+    <h3 class="question-text">Each question will ask you to pick an image that stands out to you.</h3>
+    <h3 class="question-text">Some images may repeat themselves, this is normal. You will not be asked more than 15 questions.</h3>
+    <div class="row row-centered">
+      <button id="next" class="btn" {{action 'start'}}>CLICK TO START A LICKR QUIZ</button>
+    </div>
+  </div>
+</script>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted text-center" style="margin-top: 20px;">Questions? Comments? Bugs? Email Walter Menendez: <a href="mailto:walterm@mit.edu"> walterm@mit.edu</a></p>
+    </div>
+  </footer>
 
   <!-- JAVASCRIPT  -->
   <script src="./js/libs/jquery-1.11.2.min.js"></script>

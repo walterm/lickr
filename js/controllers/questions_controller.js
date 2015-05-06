@@ -106,7 +106,25 @@ Lickr.QuestionController = Ember.Controller.extend({
 
 Lickr.ResultsController = Ember.ObjectController.extend({
     needs: ['application'],
-    confDict: Ember.computed.alias('controllers.application.confDict')
+    confDict: Ember.computed.alias('controllers.application.confDict'),
+    currentQuestion: Ember.computed.alias('controllers.application.currentQuestion'),
+    seenImgs: Ember.computed.alias('controllers.application.seenImgs'),
+    actions: {
+        restart: function () {
+            this.set('confDict', {});
+            this.set('currentQuestion', 1);
+            this.set('seenImgs', []);
+            this.transitionToRoute('start');
+        }
+    }
+});
+
+Lickr.InfoController = Ember.Controller.extend({
+    actions: {
+        start: function() {
+            this.transitionToRoute('start');
+        }
+    }
 });
 
 Lickr.StartController = Ember.Controller.extend({
