@@ -93,15 +93,18 @@ def compute_conf_img_similarity(conf_dict, img):
     codes = compute_top_colors(conf_dict)
     similarity = 0.
     for i in range(len(codes)):
-        code = (
-            int(codes[i][0:2].encode('hex')),
-            int(codes[i][2:4].encode('hex')),
-            int(codes[i][4:].encode('hex'))
-        )
-        color = (
-            int(img['top_colors'][i][0:2].encode('hex')),
-            int(img['top_colors'][i][2:4].encode('hex')),
-            int(img['top_colors'][i][4:].encode('hex'))
-        )
-        similarity += (compute_norm(code, color)) * conf_dict[codes[i]]
+        try:
+            code = (
+                int(codes[i][0:2].encode('hex')),
+                int(codes[i][2:4].encode('hex')),
+                int(codes[i][4:].encode('hex'))
+            )
+            color = (
+                int(img['top_colors'][i][0:2].encode('hex')),
+                int(img['top_colors'][i][2:4].encode('hex')),
+                int(img['top_colors'][i][4:].encode('hex'))
+            )
+            similarity += (compute_norm(code, color)) * conf_dict[codes[i]]
+        except:
+            continue
     return similarity
