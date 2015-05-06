@@ -63,9 +63,6 @@ Lickr.QuestionController = Ember.Controller.extend({
             var factor = _.values(confDict).reduce(function(a,b){return a+b}, 0);
 
             _.each(_.keys(confDict), function(k){ confDict[k] /= factor;});
-
-            var top = getTopColors(confDict);
-            var sum = _.reduce(_.values(top), function(a, b){ return a+b;});
         },
         addColor: function (hex_code) {
             var dict = this.get("confDict"),

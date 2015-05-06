@@ -88,7 +88,6 @@ Lickr.ResultsView = Ember.View.extend({
     willInsertElement: function () {
         var top = getTopColors(this.get('controller.confDict'));
         var colors = _.keys(top);
-        $.post('http://localhost:8000/results', {'colors': colors});
     },
     didInsertElement: function () {
         var images = this.get("controller").get("selectedImages"),
@@ -97,22 +96,27 @@ Lickr.ResultsView = Ember.View.extend({
         var top = getTopColors(this.get('controller.confDict'));
         var colors = _.keys(top);
         var colorDivs = [];
-        
-        $("#results_header > h1").empty();
-        $("#results_header > h1").html("Your color palette is...");
-        $("#results_body_top").empty();
-        for(var i = 0; i < colors.length; i++){
-            var color = colors[i],
-                color_div = $("<div class='color'></div>"),
-                code_div = $("<p class='code'></p>");
-            $(color_div).css("background-color", "#"+color);
-            $(code_div).html(color);
-            $(color_div).append(code_div);
-            if(i < 2) {;
-                $("#results_body_top").append(color_div);
-            } else {
-                $("#results_body_bottom").append(color_div);
-            }
-        }
+
+        $.post('http://localhost:8000/palette', {colors: Object.keys(this.get('controller.confDict'))})
+            .done(function(data){
+                $("#results_header > h1").html("Your color palette is...");
+                $("#results_body_top").empty();
+                data = JSON.parse(data);
+                var colors = data['palette'];
+                console.log(colors);
+                for(var i = 0; i < colors.length; i++){
+                    var color = colors[i],
+                        color_div = $("<div class='color'></div>"),
+                        code_div = $("<p class='code'></p>");
+                    $(color_div).css("background-color", "#"+color);
+                    $(code_div).html(color);
+                    $(color_div).append(code_div);
+                    if(i < 2) {;
+                        $("#results_body_top").append(color_div);
+                    } else {
+                        $("#results_body_bottom").append(color_div);
+                    }
+                }
+            });
     }
 });

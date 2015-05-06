@@ -28,13 +28,20 @@ def convert_args_dict(args):
     return {convert_key(key): float(args[key]) for key in args.keys()}
 
 
-@app.route("/results", methods=["POST"])
+@app.route("/palette", methods=["POST"])
 @crossdomain(origin='*')
-def save_results():
+def process_palette():
     colors = request.form.getlist('colors[]')
     colors = [str(color) for color in colors]
-    results.insert({'colors': colors})
-    return json.dumps({})
+    try:
+        print "success"
+        palette = tag_images.palette_cluster(colors)
+        results.insert({'colors': palette})
+    except:
+        print "error"
+        palette = tag_images.random_palette(colors)
+        results.insert({'colors': palette, 'error': True})
+    return json.dumps({'palette': palette})
 
 
 @app.route("/get_imgs", methods=["GET"])
