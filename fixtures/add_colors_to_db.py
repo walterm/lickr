@@ -32,6 +32,8 @@ for pic in pictures:
             'top_colors': top_colors,
             'main': most_similar
         }
+        if len(obj['top_colors']) != 4:
+            continue
     except:
         continue
 
