@@ -19,6 +19,7 @@ db = client["lickr"]
 questions_collection = db["questions"]
 images_collection = db["images"]
 results = db["results"]
+selections = db["selections"]
 
 
 def convert_args_dict(args):
@@ -36,11 +37,12 @@ def process_palette():
     try:
         print "success"
         palette = tag_images.palette_cluster(colors)
-        results.insert({'colors': palette})
+        results_id = results.insert({'colors': palette})
+        selections.insert({'palette_id': results_id, 'colors': colors})
     except:
         print "error"
         palette = tag_images.random_palette(colors)
-        results.insert({'colors': palette, 'error': True})
+        results_id = results.insert({'colors': palette, 'error': True})
     return json.dumps({'palette': palette})
 
 
