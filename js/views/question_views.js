@@ -43,7 +43,7 @@ Lickr.QuestionView = Ember.View.extend({
 
         $.get('http://104.236.64.180:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
             .done(function(images, index){
-
+                $("#photos").empty();
                 images = $.parseJSON(images);
                 var row = createRow();
                 _.each(images.imgs, function (path){
