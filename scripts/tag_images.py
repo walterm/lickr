@@ -31,9 +31,9 @@ def palette_cluster(hex_codes):
     centers = centers.astype(int)
     for i in range(4):
         r, g, b = centers[i,:][0], centers[i,:][1], centers[i,:][2]
-        r = min(255, r*1.3)
-        g = min(255, g*1.3)
-        b = min(255, b*1.3)
+        r = min(255, r*1.4)
+        g = min(255, g*1.4)
+        b = min(255, b*1.4)
         centers[i,:] = np.array((r,g,b))
     return [''.join(chr(c) for c in center).encode('hex') for center in centers]
 
