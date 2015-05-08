@@ -21,12 +21,29 @@ images_collection = db["images"]
 results = db["results"]
 selections = db["selections"]
 
+IMAGE_DICT = {
+    'ff0000': ['1', '104', '132', '138'],
+    'ffa500': ['4', '84', '114', '137'],
+    'ffff00': ['86',  '103', '110', '140'],
+    '008000': ['32', '63', '91', '108'],
+    '0000ff': ['23', '85', '100', '130'],
+    '800080': ['30', '71', '98', '105']
+}
+
 
 def convert_args_dict(args):
     def convert_key(string):
         start = string.index('[') + 3
         return string[start:-1]
     return {convert_key(key): float(args[key]) for key in args.keys()}
+
+
+@app.route("/get_favorites/<favorite>", methods=['GET'])
+@crossdomain(origin='*')
+def get_favorite_color_imgs(favorite):
+    ids = IMAGE_DICT[favorite]
+    img_objs = images_collection.find({'_id': {'$in': ids}})
+    return json.dumps({"imgs": list(img_objs)})
 
 
 @app.route("/palette", methods=["POST"])

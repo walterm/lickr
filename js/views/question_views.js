@@ -39,10 +39,15 @@ Lickr.QuestionView = Ember.View.extend({
             return d;
         };
         var controller = this.get('controller'),
-            seenImgs = controller.get('seenImgs');
+            seenImgs = controller.get('seenImgs'),
+            qNum = this.get('controller.currentQuestion'),
+            favorite = this.get('controller.favorite');
 
-        $.get('http://104.236.64.180:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
-            .done(function(images, index){
+        console.log(controller.get('favorite'));
+
+        if(qNum === 1){
+            $.get('http://104.236.64.180:8000/get_favorites/'+favorite)
+                .done(function(images, index){
                 $("#photos").empty();
                 images = $.parseJSON(images);
                 var row = createRow();
@@ -58,6 +63,26 @@ Lickr.QuestionView = Ember.View.extend({
                 }, haveISeenThis);
                 $("#photos").append(row);
             });
+        } else {
+
+            $.get('http://104.236.64.180:8000/get_imgs',{ "colors[]": getTopColors(this.get('controller.confDict'))})
+                .done(function(images, index){
+                    $("#photos").empty();
+                    images = $.parseJSON(images);
+                    var row = createRow();
+                    _.each(images.imgs, function (path){
+                        controller.send('addImg', path);
+                        if(!this(seenImgs, path)){
+                            $(row).append(createImg(path['_id']));
+                            if(index +1 % 3 === 0) {
+                                $("#photos").append(row);
+                                row = createRow();
+                            }
+                        }
+                    }, haveISeenThis);
+                    $("#photos").append(row);
+                });
+        }
 
 
 

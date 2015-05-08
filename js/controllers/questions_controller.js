@@ -1,7 +1,8 @@
 Lickr.ApplicationController = Ember.Controller.extend({
     confDict: {},
     currentQuestion: 1,
-    seenImgs: []
+    seenImgs: [],
+    favorite: ''
 });
 
 var getTopColors = function(confDict){
@@ -23,13 +24,13 @@ Lickr.QuestionController = Ember.Controller.extend({
     confDict: Ember.computed.alias('controllers.application.confDict'),
     currentQuestion: Ember.computed.alias('controllers.application.currentQuestion'),
     seenImgs: Ember.computed.alias('controllers.application.seenImgs'),
+    favorite: Ember.computed.alias('controllers.application.favorite'),
     currentImgs: [],
     selectedImg: undefined,
     nextQuestion: false,
     actions: {
         addImg: function(img_obj){
             this.get('currentImgs').push(img_obj);
-
         },
         findImg: function(img_id){
             var imgs = this.get('currentImgs');
@@ -120,6 +121,7 @@ Lickr.InfoController = Ember.Controller.extend({
 Lickr.StartController = Ember.Controller.extend({
     needs: ['application'],
     confDict: Ember.computed.alias('controllers.application.confDict'),
+    favorite: Ember.computed.alias('controllers.application.favorite'),
     actions: {
         favorite: function (color) {
             var colorToCode = {
@@ -131,6 +133,7 @@ Lickr.StartController = Ember.Controller.extend({
                 'Purple': '800080'
             };
             var fave = $(".color-selected");
+            this.set('favorite', colorToCode[$(fave).find(".code").html()]);
             this.get('confDict')[colorToCode[$(fave).find(".code").html()]] = 0.5;
 
             this.transitionToRoute('question', 1);
