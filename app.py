@@ -43,6 +43,7 @@ def convert_args_dict(args):
 def get_favorite_color_imgs(favorite):
     ids = IMAGE_DICT[favorite]
     img_objs = images_collection.find({'_id': {'$in': ids}})
+    client.close()
     return json.dumps({"imgs": list(img_objs)})
 
 
@@ -60,6 +61,7 @@ def process_palette():
         print "error"
         palette = tag_images.random_palette(colors)
         results_id = results.insert({'colors': palette, 'error': True})
+    client.close()
     return json.dumps({'palette': palette})
 
 
@@ -80,10 +82,11 @@ def get_imgs():
         for img in img_results:
             if img['_id'] in imgs:
                 img_objs.append(img)
-        img_results.close()
+        client.close()        
         return json.dumps({"imgs": img_objs})
     except:
         imgs = tag_images.random_images(images_collection)
+        client.close()
         return json.dumps({"imgs": img_objs})
 
 if __name__ == "__main__":
