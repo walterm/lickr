@@ -103,3 +103,7 @@ body {
 .btn {
     margin-bottom: 30px;
 }
+
+img {
+    object-fit: contain;
+}

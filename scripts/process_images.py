@@ -24,7 +24,7 @@ def get_flickr_pic(link, counter):
 with open('reddit_pics.txt', 'r') as f:
     links = f.readlines()
     links = [l.rstrip() for l in links]
-    counter = 73 + 1
+    counter = 155 + 1
     for link in links:
         print link
         parsed_url = urlparse(link)
