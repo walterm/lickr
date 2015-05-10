@@ -4,3 +4,5 @@ env/
 *.docx
 reddit_pics.txt
 .DS_Store
+*.json
+new_imgs/
